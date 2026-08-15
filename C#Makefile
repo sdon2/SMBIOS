@@ -1,0 +1,14 @@
+CSC = C:/Windows/Microsoft.NET/Framework/v4.0.30319/csc.exe
+TARGET = smbios.exe
+SRC = smbios.cs
+FLAGS = /nologo /target:exe /warn:4 /optimize+ /platform:x86
+REFERENCES =
+
+all: $(TARGET)
+
+$(TARGET): $(SRC)
+	$(CSC) /out:$(TARGET) $(FLAGS) $(REFERENCES) $(SRC)
+
+clean:
+	del $(TARGET)
+	
