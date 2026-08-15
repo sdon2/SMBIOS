@@ -4,17 +4,20 @@ CFLAGS = -Wall -Wextra -O2 -std=c99
 RM = del /Q /F
 
 # --- Project Files ---
-TARGET_DLL = smbios.dll
-TARGET_LIB = smbios.a
+TARGET_DLL = build\smbios.dll
+TARGET_LIB = build\smbios.a
 
 # List your C source files here
 SRCS = smbios_dll.c
 OBJS = $(SRCS:.c=.o)
 
+# Suppress warnings
+SUPPRESS = -Wno-unused-parameter -Wno-multichar
+
 # --- Linker Flags for DLL ---
 # -shared creates the DLL
 # --out-implib creates the static import library for compilation linking
-#LDFLAGS = -shared -Wl,--add-stdcall-alias,--out-implib,$(TARGET_LIB)
+#LDFLAGS = -shared -Wl,--add-stdcall-alias,--out-implib,build\$(TARGET_LIB)
 LDFLAGS = -shared -Wl,--add-stdcall-alias
 
 # --- Build Targets ---
@@ -24,15 +27,15 @@ all: $(TARGET_DLL)
 
 # Link object files into the final DLL
 $(TARGET_DLL): $(OBJS)
-	$(CC) -o $@ $(OBJS) $(LDFLAGS)
+	$(CC) -o $@ build\$(OBJS) $(LDFLAGS)
 
 # Compile C source files into object files
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(SUPPRESS) -c $< -o build\$@
 
 # Windows command prompt clean-up
 clean:
-	@if exist *.o $(RM) *.o
+	@if exist build\*.o $(RM) build\*.o
 	@if exist $(TARGET_DLL) $(RM) $(TARGET_DLL)
 	@if exist $(TARGET_LIB) $(RM) $(TARGET_LIB)
 	
